@@ -948,6 +948,9 @@ static int check_fmt(struct file *file, enum v4l2_buf_type type)
 	const struct v4l2_ioctl_ops *ops = vfd->ioctl_ops;
 	bool is_vid = vfd->vfl_type == VFL_TYPE_VIDEO &&
 		      (vfd->device_caps & vid_caps);
+	printk(KERN_INFO "...in check_fmt...");
+	printk(KERN_INFO "vid_caps = %u", vid_caps);
+	printk(KERN_INFO "vfd->device_caps = %u", vfd->device_caps);
 	bool is_vbi = vfd->vfl_type == VFL_TYPE_VBI;
 	bool is_sdr = vfd->vfl_type == VFL_TYPE_SDR;
 	bool is_tch = vfd->vfl_type == VFL_TYPE_TOUCH;
@@ -958,12 +961,13 @@ static int check_fmt(struct file *file, enum v4l2_buf_type type)
 
 	if (ops == NULL)
 		return -EINVAL;
-
+	printk(KERN_INFO "...made it right before switch...");
 	switch (type) {
 	case V4L2_BUF_TYPE_VIDEO_CAPTURE:
 		if ((is_vid || is_tch) && is_rx &&
 		    (ops->vidioc_g_fmt_vid_cap || ops->vidioc_g_fmt_vid_cap_mplane))
 			return 0;
+		printk(KERN_INFO "...in V4L2_BUF_TYPE_VIDEO_CAPTURE but breaking instead of returning 0...");
 		break;
 	case V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE:
 		if ((is_vid || is_tch) && is_rx && ops->vidioc_g_fmt_vid_cap_mplane)
@@ -1021,6 +1025,7 @@ static int check_fmt(struct file *file, enum v4l2_buf_type type)
 	default:
 		break;
 	}
+	printk(KERN_INFO "...made it to the end of switch (bad news)...");
 	return -EINVAL;
 }
 
