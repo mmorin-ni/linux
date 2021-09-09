@@ -946,6 +946,11 @@ static int check_fmt(struct file *file, enum v4l2_buf_type type)
 	bool is_tch = vfd->vfl_type == VFL_TYPE_TOUCH;
 	bool is_rx = vfd->vfl_dir != VFL_DIR_TX;
 	bool is_tx = vfd->vfl_dir != VFL_DIR_RX;
+	int fmt_vid_cap = ops->vidioc_g_fmt_vid_cap;
+	int vid_cap_mplane = ops->vidioc_g_fmt_vid_cap_mplane;
+	printk(KERN_INFO "is_rx: %d", is_rx);
+	printk(KERN_INFO "ops->vidioc_g_fmt_vid_cap: %d", fmt_vid_cap);
+	printk(KERN_INFO "ops->vidioc_g_fmt_vid_cap_mplane: %d", vid_cap_mplane); 
 	printk(KERN_INFO "in check fmt");
 	if (ops == NULL)
 		return -EINVAL;
