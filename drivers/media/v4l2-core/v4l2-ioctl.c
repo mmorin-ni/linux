@@ -948,9 +948,10 @@ static int check_fmt(struct file *file, enum v4l2_buf_type type)
 	const struct v4l2_ioctl_ops *ops = vfd->ioctl_ops;
 	bool is_vid = vfd->vfl_type == VFL_TYPE_VIDEO &&
 		      (vfd->device_caps & vid_caps);
+	printk(KERN_INFO "is_vid: %d", is_vid);
 	printk(KERN_INFO "...in check_fmt...");
-	printk(KERN_INFO "vid_caps = %u", vid_caps);
-	printk(KERN_INFO "vfd->device_caps = %u", vfd->device_caps);
+	printk(KERN_INFO "vid_caps = 0x%08x", vid_caps);
+	printk(KERN_INFO "vfd->device_caps = 0x%08x", vfd->device_caps);
 	bool is_vbi = vfd->vfl_type == VFL_TYPE_VBI;
 	bool is_sdr = vfd->vfl_type == VFL_TYPE_SDR;
 	bool is_tch = vfd->vfl_type == VFL_TYPE_TOUCH;
@@ -958,6 +959,12 @@ static int check_fmt(struct file *file, enum v4l2_buf_type type)
 		       (vfd->device_caps & meta_caps);
 	bool is_rx = vfd->vfl_dir != VFL_DIR_TX;
 	bool is_tx = vfd->vfl_dir != VFL_DIR_RX;
+	int fmt_vid_cap = ops->vidioc_g_fmt_vid_cap;
+	int vid_cap_mplane = ops->vidioc_g_fmt_vid_cap_mplane;
+	printk(KERN_INFO "is_rx: %d", is_rx);
+	printk(KERN_INFO "is_tch: %d", is_tch);
+	printk(KERN_INFO "ops->vidioc_g_fmt_vid_cap: %d", fmt_vid_cap);
+	printk(KERN_INFO "ops->vidioc_g_fmt_vid_cap_mplane: %d", vid_cap_mplane); 
 
 	if (ops == NULL)
 		return -EINVAL;
