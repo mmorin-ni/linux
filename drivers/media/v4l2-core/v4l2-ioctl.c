@@ -945,6 +945,8 @@ static int check_fmt(struct file *file, enum v4l2_buf_type type)
 	const u32 meta_caps = V4L2_CAP_META_CAPTURE |
 			      V4L2_CAP_META_OUTPUT;
 	struct video_device *vfd = video_devdata(file);
+	printk(KERN_INFO "vfd->name: %s", vfd->name);
+	printk(KERN_INFO "vfd->vfl_type: %d", vfd->vfl_type);
 	const struct v4l2_ioctl_ops *ops = vfd->ioctl_ops;
 	bool is_vid = vfd->vfl_type == VFL_TYPE_VIDEO &&
 		      (vfd->device_caps & vid_caps);
@@ -975,6 +977,8 @@ static int check_fmt(struct file *file, enum v4l2_buf_type type)
 		    (ops->vidioc_g_fmt_vid_cap || ops->vidioc_g_fmt_vid_cap_mplane))
 			return 0;
 		printk(KERN_INFO "...in V4L2_BUF_TYPE_VIDEO_CAPTURE but breaking instead of returning 0...");
+		printk(KERN_INFO "...returning 0 anyways...");
+		return 0;
 		break;
 	case V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE:
 		if ((is_vid || is_tch) && is_rx && ops->vidioc_g_fmt_vid_cap_mplane)
